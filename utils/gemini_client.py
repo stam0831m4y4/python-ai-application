@@ -42,4 +42,4 @@ def stream_response(prompt: str, model: str = "gemini-2.0-flash"):
             if chunk.text:
                 yield chunk.text
     except genai_errors.ClientError as e:
-        raise RuntimeError(f"Gemini API エラー (ステータス: {e.status_code}): {e.message}") from e
+        raise RuntimeError(f"Gemini API エラー: {e}") from e
