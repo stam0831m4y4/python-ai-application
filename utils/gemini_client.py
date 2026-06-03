@@ -1,4 +1,5 @@
 import os
+import streamlit as st
 from google import genai
 from dotenv import load_dotenv
 
@@ -7,13 +8,24 @@ load_dotenv()
 _client = None
 
 
+def _get_api_key() -> str:
+    # Streamlit Secrets → 環境変数の順で取得
+    try:
+        key = st.secrets.get("GEMINI_API_KEY")
+        if key:
+            return key
+    except Exception:
+        pass
+    key = os.getenv("GEMINI_API_KEY")
+    if not key:
+        raise ValueError("GEMINI_API_KEY が設定されていません。Streamlit Secrets または .env ファイルを確認してください。")
+    return key
+
+
 def get_client() -> genai.Client:
     global _client
     if _client is None:
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise ValueError("GEMINI_API_KEY が設定されていません。.env ファイルを確認してください。")
-        _client = genai.Client(api_key=api_key)
+        _client = genai.Client(api_key=_get_api_key())
     return _client
 
 
