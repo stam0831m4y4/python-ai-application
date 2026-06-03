@@ -71,6 +71,22 @@ with st.sidebar:
             st.rerun()
 
     st.divider()
+    st.subheader("🔑 API キー設定")
+    api_key_input = st.text_input(
+        "Gemini API キー",
+        value=st.session_state.get("gemini_api_key", ""),
+        type="password",
+        placeholder="AIzaSy...",
+        label_visibility="collapsed",
+    )
+    if api_key_input:
+        st.session_state.gemini_api_key = api_key_input
+        st.success("APIキーを設定しました", icon="✅")
+    else:
+        st.session_state.gemini_api_key = ""
+        st.caption("APIキーを入力してください")
+
+    st.divider()
     st.caption(TOOLS[st.session_state.selected_tool]["description"])
     st.markdown(
         """

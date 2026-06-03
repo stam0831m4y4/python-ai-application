@@ -9,7 +9,13 @@ _client = None
 
 
 def _get_api_key() -> str:
-    # Streamlit Secrets → 環境変数の順で取得
+    # 画面入力 → Streamlit Secrets → 環境変数の順で取得
+    try:
+        key = st.session_state.get("gemini_api_key")
+        if key:
+            return key
+    except Exception:
+        pass
     try:
         key = st.secrets.get("GEMINI_API_KEY")
         if key:
@@ -18,15 +24,13 @@ def _get_api_key() -> str:
         pass
     key = os.getenv("GEMINI_API_KEY")
     if not key:
-        raise ValueError("GEMINI_API_KEY が設定されていません。Streamlit Secrets または .env ファイルを確認してください。")
+        raise ValueError("GEMINI_API_KEY が設定されていません。サイドバーにAPIキーを入力してください。")
     return key
 
 
 def get_client() -> genai.Client:
-    global _client
-    if _client is None:
-        _client = genai.Client(api_key=_get_api_key())
-    return _client
+    # 画面入力キーが変わる可能性があるため毎回生成
+    return genai.Client(api_key=_get_api_key())
 
 
 def stream_response(prompt: str, model: str = "gemini-2.5-flash"):
