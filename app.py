@@ -1,5 +1,5 @@
 import streamlit as st
-from tools import blog_writer, email_reply, summarizer, proofreader, sns_writer, style_converter, security_checker
+from tools import blog_writer, email_reply, summarizer, proofreader, sns_writer, style_converter, security_checker, gemini_chat
 
 st.set_page_config(
     page_title="AI ライティングツール",
@@ -43,6 +43,11 @@ TOOLS = {
         "icon": "🛡️",
         "module": security_checker,
         "description": "Streamlit + LLM API アプリのセキュリティを診断しレポートを生成",
+    },
+    "Gemini API チャット": {
+        "icon": "💬",
+        "module": gemini_chat,
+        "description": "Gemini API に直接プロンプトを送信して応答を確認",
     },
 }
 
