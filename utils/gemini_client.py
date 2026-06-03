@@ -33,7 +33,7 @@ def get_client() -> genai.Client:
     return genai.Client(api_key=_get_api_key())
 
 
-def stream_response(prompt: str, model: str = "gemini-2.5-flash"):
+def stream_response(prompt: str, model: str = "gemini-2.0-flash"):
     client = get_client()
     response = client.models.generate_content_stream(model=model, contents=prompt)
     for chunk in response:
