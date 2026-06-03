@@ -67,6 +67,21 @@ with st.sidebar:
 
     st.divider()
     st.caption(TOOLS[st.session_state.selected_tool]["description"])
+    st.markdown(
+        """
+        <div style="
+            display: inline-block;
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        ">⚡ Powered by Gemini API</div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 selected = st.session_state.selected_tool
 TOOLS[selected]["module"].render()
