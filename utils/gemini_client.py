@@ -34,8 +34,12 @@ def get_client() -> genai.Client:
 
 
 def stream_response(prompt: str, model: str = "gemini-2.0-flash"):
+    from google.genai import errors as genai_errors
     client = get_client()
-    response = client.models.generate_content_stream(model=model, contents=prompt)
-    for chunk in response:
-        if chunk.text:
-            yield chunk.text
+    try:
+        response = client.models.generate_content_stream(model=model, contents=prompt)
+        for chunk in response:
+            if chunk.text:
+                yield chunk.text
+    except genai_errors.ClientError as e:
+        raise RuntimeError(f"Gemini API エラー (ステータス: {e.status_code}): {e.message}") from e
